@@ -6,6 +6,7 @@ def retrieve_phone_code(driver) -> str:
     import json
     import time
     from selenium.common import WebDriverException
+    from selenium.webdriver.support.wait import WebDriverWait
     code = None
     for i in range(10):
         try:
@@ -17,7 +18,7 @@ def retrieve_phone_code(driver) -> str:
                                               {'requestId': message_data["params"]["requestId"]})
                 code = ''.join([x for x in body['body'] if x.isdigit()])
         except WebDriverException:
-            time.sleep(1)
+            WebDriverWait(driver, 1)
             continue
         if not code:
             raise Exception("No se encontró el código de confirmación del teléfono.\n"
